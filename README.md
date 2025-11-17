@@ -63,4 +63,4 @@ Esses diagramas fornecem uma visão de alto nível da organização do sistema.
 
 ### 6. Modelo de Dados
 
-* **Modelo de Dados (`dados.puml`)**: Este arquivo destina-se a conter o diagrama entidade-relacionamento (DER) ou um diagrama de classes focado nos dados, mostrando a estrutura do banco de dados. (O arquivo `dados.puml` fornecido estava vazio).
+* **Modelo de Dados (`dados.puml`)**: Este arquivo destina-se a conter o diagrama entidade-relacionamento (DER) ou um diagrama de classes focado nos dados, mostrando a estrutura do banco de dados. 
