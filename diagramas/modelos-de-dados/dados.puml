@@ -1,3 +1,101 @@
 @startuml
-  
-@enduml 
+title Modelo de Dados do Sistema
+
+' Entidade User inferida de chaves estrangeiras (userId, leitorId) e arquitetura
+entity User {
+  +id: Long
+  ' ... outros campos (ex: nome, email)
+}
+
+package "Rifa" {
+    entity Rifa {
+        +id: Long
+        -titulo: String
+        -descricao: String
+        -dataSorteio: Date
+        -qtdBilhetesTotal: Long
+        -qtdBilhetesVendidos: Long
+        -totalValorArrecadado: BigDecimal
+        -statusRifa: String
+    }
+
+    entity Bilhete {
+        +id: Long
+        -numeroBilhete: String
+        -status: String
+        ' --- Chaves Estrangeiras ---
+        -rifaId: Long
+        -userId: Long
+    }
+}
+
+package "Doação" {
+    entity Doacao {
+        +id: Long
+        -valor: BigDecimal
+        -dataDoacao: Date
+        -descricao: String
+        -avaliacaoDoacao: String
+        -descricacaoDoacao: String
+        ' --- Chave Estrangeira ---
+        -userId: Long
+    }
+}
+
+package "Biblioteca" {
+    entity Livro {
+        +id: Long
+        -titulo: String
+        -subtitulo: String
+        -resumo: String
+        -classificacao: String
+        -autorPrincipal: String
+        -autorSecundario: String
+        -observacao: String
+        -cutter: String
+        -dataDeRegistro: Date
+        -isbn: String
+        -editora: String
+        -edicao: String
+        -ano: String
+        -anoPublicacao: Date
+    }
+
+    entity Exemplar {
+        +id: Long
+        -codigoExemplar: String
+        -statusExemplar: String
+        ' --- Chave Estrangeira ---
+        -livroId: Long
+    }
+
+    entity Emprestimo {
+        +id: Long
+        -dataEmprestimo: Date
+        -prazoDeDevolucao: LocalDate
+        -statusEmprestimo: String
+        ' --- Chaves Estrangeiras ---
+        -leitorId: Long ' (Refere-se a User)
+        -exemplarId: Long
+    }
+
+    entity ExemplarHistory {
+        +id: Long
+        -dataAlteracao: Date
+        -createdAt: Instant
+        -descricaoAlteracao: String
+        ' --- Chave Estrangeira ---
+        -exemplarId: Long
+    }
+}
+
+' --- Relacionamentos ---
+Rifa "1" -- "0..*" Bilhete : contém
+User "1" -- "0..*" Bilhete : compra
+User "1" -- "0..*" Doacao : registra
+User "1" -- "0..*" Emprestimo : (Leitor) realiza
+Livro "1" -- "1..*" Exemplar : possui
+Exemplar "1" -- "0..*" Emprestimo : é emprestado
+Exemplar "1" -- "0..*" ExemplarHistory : tem histórico
+
+@enduml
