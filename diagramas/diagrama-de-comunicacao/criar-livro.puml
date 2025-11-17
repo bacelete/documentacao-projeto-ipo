@@ -1,0 +1,20 @@
+@startuml
+title Diagrama de Comunicação - Criação de Livro
+
+actor Bibliotecária
+boundary LivroController
+control LivroService
+entity Livro
+database BibliotecaDB
+
+Bibliotecária -right-> LivroController : 1. Solicitar criação de livro
+LivroController -right-> LivroService : 2. Validar dados do livro
+LivroService -> LivroService : 3. Verificar campos obrigatórios
+LivroService -right-> Livro : 4. Criar nova instância de livro
+Livro -right-> BibliotecaDB : 5. INSERT INTO livros (...)
+BibliotecaDB -left--> Livro : 6. Retorna o livro criado
+Livro -left--> LivroService : 7. Retorna instância do livro
+LivroService -left--> LivroController : 8. Retorna instância do livro
+LivroController -left--> Bibliotecária : 9. Retorna instância do livro status OK
+
+@enduml

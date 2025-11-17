@@ -1,0 +1,22 @@
+@startuml
+title Diagrama de Comunicação - Renovação de Empréstimo
+
+actor Bibliotecária
+boundary EmprestimoController
+control EmprestimoService
+entity Emprestimo
+database BibliotecaDB
+
+' As setas indicam a direção da mensagem e o número indica a ordem
+Bibliotecária -right-> EmprestimoController : 1. Solicitar renovação de empréstimo
+EmprestimoController -right-> EmprestimoService : 2. Verificar elegibilidade para renovação
+EmprestimoService -right-> Emprestimo : 3. Consultar status do empréstimo
+Emprestimo -right-> BibliotecaDB : 4. SELECT * FROM emprestimos WHERE id = ?
+BibliotecaDB -left--> Emprestimo : 5. Retorna dados do empréstimo
+Emprestimo -left--> EmprestimoService : 6. Retorna status do empréstimo
+EmprestimoService -right-> Emprestimo : 7. Atualizar data de devolução
+Emprestimo -left--> EmprestimoService : 8. Retorna empréstimo atualizado
+EmprestimoService -left--> EmprestimoController : 9. Retorna empréstimo renovado
+EmprestimoController -left--> Bibliotecária : 10. Retorna confirmação de renovação com status OK
+
+@enduml

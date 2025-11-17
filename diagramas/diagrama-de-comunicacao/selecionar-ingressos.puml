@@ -1,0 +1,21 @@
+@startuml
+title Diagrama de Comunicação - Seleção de Ingressos
+
+actor Usuário
+boundary BilheteController
+control BilheteService
+entity Bilhete
+database RifaDB
+
+Usuário -right-> BilheteController : 1. Selecionar ingressos
+BilheteController -right-> BilheteService : 2. Processar seleção de ingresso(s) e validação
+BilheteService -right-> Bilhete : 3. Verificar disponibilidade de ingresso
+Bilhete -right-> RifaDB : 4. SELECT * FROM ingressos WHERE id = ?
+RifaDB -left--> Bilhete : 5. Retorna dados do ingresso
+Bilhete -left--> BilheteService : 6. Retorna disponibilidade do ingresso
+BilheteService -right-> Bilhete : 7. Reservar ingresso(s)
+Bilhete -left--> BilheteService : 8. Retorna ingresso(s) reservado(s)
+BilheteService -left--> BilheteController : 9. Retorna ingresso(s) selecionado(s) com status OK
+BilheteController -left--> Usuário : 10. Retorna confirmação de seleção de ingresso(s) com status OK
+
+@enduml
