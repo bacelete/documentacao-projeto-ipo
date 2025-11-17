@@ -1,0 +1,24 @@
+@startuml   
+    database "PostgreSQL" as DB{
+    }
+    component "rifa-api" as RifaAPI {
+    }
+    component "biblioteca-api" as BibliotecaAPI {
+    }
+    component "doacao-api" as DoacaoAPI {
+    }
+    component "cliente-web" as ClienteWeb  #Yellow {
+    }
+    component "pagamento-api" as PagamentoAPI {
+    }
+    RifaAPI --> DB : HTTP/REST
+    BibliotecaAPI --> DB : HTTP/REST
+    DoacaoAPI --> DB : HTTP/REST
+    [ClienteWeb] - TCP
+    [PagamentoAPI] - API
+    TCP --> RifaAPI : HTTP/REST
+    TCP --> BibliotecaAPI : HTTP/REST
+    TCP --> DoacaoAPI : HTTP/REST
+    RifaAPI --> API : HTTP/REST
+
+@enduml 

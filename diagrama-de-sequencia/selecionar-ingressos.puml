@@ -1,0 +1,26 @@
+@startuml
+    actor Usuário
+    boundary BilheteController
+    control BilheteService
+    Usuário -> BilheteController: Selecionar ingressos
+    activate BilheteController
+    BilheteController -> BilheteService: Processar seleção de ingresso(s) e validação
+    activate BilheteService
+    entity Bilhete  
+    BilheteService -> Bilhete: Verificar disponibilidade de ingresso
+    activate Bilhete
+    database RifaDB
+    Bilhete -> RifaDB: SELECT * FROM ingressos WHERE id = ?
+    activate RifaDB   
+    RifaDB --> Bilhete: Retorna dados do ingresso
+    deactivate RifaDB
+    Bilhete --> BilheteService: Retorna disponibilidade do ingresso
+    deactivate Bilhete
+    BilheteService -> Bilhete: Reservar ingresso(s)
+    Bilhete --> BilheteService: Retorna ingresso(s) reservado(s)
+    deactivate BilheteService
+    BilheteService --> BilheteController: Retorna ingresso(s) selecionado(s) com status OK
+    deactivate BilheteController
+    BilheteController --> Usuário: Retorna confirmação de seleção de ingresso(s) com status OK
+    deactivate Usuário
+@enduml

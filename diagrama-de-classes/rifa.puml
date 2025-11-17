@@ -1,0 +1,64 @@
+@startuml   
+    package "rifa.controllers" {
+        class BilheteController {
+            +criarBilhete()
+            +getAllBilhetes() 
+            +excluirBilhete()
+            +atualizarBilhete()
+        }
+        class RifaController {
+            +criarRifa()
+            +getAllRifas() 
+            +excluirRifa()
+            +atualizarRifa()
+            +cancelarRifa()
+            +getPorcentagemBilhetesVendidos()
+        }
+    }
+    package "rifa.services" {
+        class BilheteService {
+            +criarBilhete()
+            +getAllBilhetes() 
+            +excluirBilhete()
+            +atualizarBilhete()
+        }
+        class RifaService {
+            +criarRifa()
+            +getAllRifas() 
+            +excluirRifa()
+            +atualizarRifa()
+            +cancelarRifa()
+            +getPorcentagemBilhetesVendidos()
+        }
+    }
+    package "rifa.models" {
+        class Bilhete {
+            -id: Long
+            -numeroBilhete: String
+            -rifaId: Long
+            -userId: Long
+            +getId(): Long
+            +getNumero(): String
+            +getStatus(): String
+            +getRifaId(): Long
+        }
+        class Rifa {
+            -id: Long
+            -titulo: String
+            -descricao: String
+            -dataSorteio: Date
+            -qtdBilhetesTotal: Long
+            -qtdBilhetesVendidos: Long
+            -totalValorArrecadado: BigDecimal
+            -statusRifa: String
+            +getId(): Long
+            +getNome(): String
+            +getDescricao(): String
+            +getDataSorteio(): Date
+        }
+    }
+    BilheteController --> BilheteService : usa
+    RifaController --> RifaService : usa
+    BilheteService --> Bilhete : manipula
+    RifaService --> Rifa : manipula
+@enduml

@@ -1,0 +1,24 @@
+@startuml   
+    actor Bibliotecária
+    boundary LivroController
+    Bibliotecária -> LivroController: Solicitar criação de livro
+    activate LivroController
+    control LivroService
+    LivroController -> LivroService: Validar dados do livro
+    activate LivroService
+    LivroService -> LivroService: Verificar campos obrigatórios
+    entity Livro
+    LivroService -> Livro: Criar nova instância de livro
+    activate Livro
+    database BibliotecaDB
+    Livro -> BibliotecaDB: INSERT INTO livros (...)
+    activate BibliotecaDB
+    BibliotecaDB -> Livro: Retorna o livro criado
+    deactivate BibliotecaDB
+    Livro --> LivroService: Retorna instância do livro
+    deactivate Livro
+    LivroService -> LivroController: Retorna instância do livro
+    deactivate LivroService
+    LivroController --> Bibliotecária: Retorna instância do livro status OK
+    deactivate LivroController
+@enduml

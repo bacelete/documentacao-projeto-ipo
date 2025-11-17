@@ -1,0 +1,18 @@
+@startuml
+   [*] --> LivroDisponivel
+   State "Livro Disponível" as LivroDisponivel {
+   }
+   State "Livro Emprestado" as LivroEmprestado {
+   }
+    State "Livro Atrasado" as LivroAtrasado {
+    }
+    LivroDisponivel --> LivroEmprestado : Emprestar livro
+    LivroEmprestado --> LivroAtrasado : Vencer prazo de devolução
+    LivroEmprestado --> LivroDisponivel : Devolver livro no prazo
+    LivroAtrasado --> LivroDisponivel : Devolver livro com atraso
+    State "Livro Reservado" as LivroReservado {
+    }
+    LivroDisponivel --> LivroReservado : Reservar livro
+    LivroReservado --> LivroDisponivel : Cancelar reserva
+    LivroReservado --> LivroEmprestado : Emprestar livro reservado
+@enduml 

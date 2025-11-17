@@ -1,0 +1,141 @@
+@startuml
+package "biblioteca.controllers" {
+        class EmprestimoController {
+            +buscarEmprestimos()
+            +renovarEmprestimo()
+            +devolverEmprestimo()
+            +listarEmprestimos()
+            +listarEmprestimosPorLeitor()
+            +listarEmprestimosAtrasados()
+        }
+        class LivroController {
+            +adicionarLivro()
+            +removerLivro()
+            +atualizarLivro()
+            +buscarLivroPorId()
+            +listarLivros()
+            +getLivroByTitulo()
+        }
+        class ExemplarController {
+            +adicionarExemplar()
+            +removerExemplar()
+            +atualizarExemplar()
+            +buscarExemplarPorId()
+            +listarExemplares()
+            +getExemplarByCodigo()
+            +getExemplaresDeUmLivro()
+            +buscarExemplaresAtivos()
+        }
+        class DashboardController {
+            +getEmprestimosAtivos()
+            +getLivrosEmprestados()
+            +getLeitoresAtivos()
+        }
+        class ExemplaresHistoryController {
+            +getHistoricoExemplar()
+            +listarHistoricoPorEmprestimo()
+        }
+    }
+    package "biblioteca.services" {
+        class EmprestimoService {
+            +buscarEmprestimos()
+            +renovarEmprestimo()
+            +devolverEmprestimo()
+            +listarEmprestimos()
+            +listarEmprestimosPorLeitor()
+            +listarEmprestimosAtrasados()
+        }
+        class LivroService {
+            +adicionarLivro()
+            +removerLivro()
+            +atualizarLivro()
+            +buscarLivroPorId()
+            +listarLivros()
+            +getLivroByTitulo()
+        }
+        class ExemplarService {
+            +adicionarExemplar()
+            +removerExemplar()
+            +atualizarExemplar()
+            +buscarExemplarPorId()
+            +listarExemplares()
+            +getExemplarByCodigo()
+            +getExemplaresDeUmLivro()
+            +buscarExemplaresAtivos()
+        }
+        class DashboardService {
+            +getEmprestimosAtivos()
+            +getLivrosEmprestados()
+            +getLeitoresAtivos()
+        }
+        class ExemplaresHistoryService {
+            +getHistoricoExemplar()
+            +listarHistoricoPorEmprestimo()
+        }
+    }
+    package "biblioteca.models" {
+        class Emprestimo {
+            -id: Long
+            -dataEmprestimo: Date
+            -prazoDeDevolucao: LocalDate
+            -statusEmprestimo: String
+            -leitorId: Long
+            -exemplarId: Long
+            +getId(): Long
+            +getDataEmprestimo(): Date
+            +getDataDevolucao(): Date
+            +getStatusEmprestimo(): String
+        }
+        class Livro {
+            -id: Long
+            -titulo: String
+            -subtitulo: String
+            -resumo: String
+            -classificacao: String 
+            -autorPrincipal: String
+            -autorSecundario: String
+            -observacao: String
+            -cutter: String
+            -dataDeRegistro: Date
+            -isbn: String
+            -editora: String
+            -edicao: String
+            -ano: String
+            -anoPublicacao: Date
+            +getId(): Long
+            +getTitulo(): String
+            +getAutor(): String
+            +getIsbn(): String
+        }
+        class Exemplar {
+            -id: Long
+            -codigoExemplar: String
+            -statusExemplar: String
+            -livroId: Long
+            +getId(): Long
+            +getCodigoExemplar(): String
+            +getStatusExemplar(): String
+        }
+        class ExemplarHistory {
+            -id: Long
+            -dataAlteracao: Date
+            -createdAt: Instant
+            -exemplarId: Long
+            +getId(): Long
+            +getDataAlteracao(): Date
+            +getDescricaoAlteracao(): String
+        }
+        EmprestimoController --> EmprestimoService : usa
+        LivroController --> LivroService : usa
+        ExemplarController --> ExemplarService : usa
+        DashboardController --> DashboardService : usa
+        ExemplaresHistoryController --> ExemplaresHistoryService : usa
+        EmprestimoService --> Emprestimo : cria/consulta/atualiza
+        LivroService --> Livro : cria/consulta/atualiza
+        ExemplarService --> Exemplar : cria/consulta/atualiza
+        ExemplaresHistoryService --> ExemplarHistory : cria/consulta/atualiza
+        DashboardService --> Emprestimo : consulta
+        DashboardService --> Livro : consulta
+        DashboardService --> Exemplar : consulta
+    }
+@enduml

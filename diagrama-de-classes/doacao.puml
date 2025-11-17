@@ -1,0 +1,34 @@
+@startuml
+    package "doacao.controllers" {
+            class DoacaoController {
+                +criarDoacao()
+                +getAllDoacoes() 
+                +excluirDoacao()
+                +atualizarDoacao()
+            }
+        }
+        package "doacao.services" {
+            class DoacaoService {
+                +criarDoacao()
+                +getAllDoacoes() 
+                +excluirDoacao()
+                +atualizarDoacao()
+            }
+        }
+        package "doacao.models" {
+            class Doacao {
+                -id: Long
+                -valor: BigDecimal
+                -dataDoacao: Date
+                -descricao: String
+                -avaliacaoDoacao: String
+                -descricacaoDoacao: String
+                -userId: Long
+                +getId(): Long
+                +getValor(): BigDecimal
+                +getDataDoacao(): Date
+            }
+        }
+        DoacaoController --> DoacaoService : usa  
+        DoacaoService --> Doacao : manipula
+@enduml 

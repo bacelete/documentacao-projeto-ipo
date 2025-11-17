@@ -1,0 +1,25 @@
+@startuml   
+[*] --> RifaCriada
+State "Rifa Criada" as RifaCriada {
+}
+State "Bilhete Disponível" as BilheteDisponivel {
+}
+State "Bilhete Reservado" as BilheteReservado {
+}
+State "Bilhete Vendido" as BilheteVendido {
+}
+RifaCriada --> BilheteDisponivel : Criar bilhete
+BilheteDisponivel --> BilheteReservado : Reservar bilhete
+BilheteReservado --> BilheteVendido : Vender bilhete
+BilheteReservado --> BilheteDisponivel : Cancelar reserva
+BilheteVendido --> BilheteDisponivel : Reembolsar bilhete
+State "Rifa Cancelada" as RifaCancelada {
+}
+State "Rifa Sorteada" as RifaSorteada {
+}
+RifaCriada --> RifaSorteada : Sortear rifa
+RifaSorteada --> [*]
+RifaCriada --> RifaCancelada : Cancelar rifa
+RifaCancelada --> [*]
+
+@enduml

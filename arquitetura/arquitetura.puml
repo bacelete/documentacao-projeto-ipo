@@ -1,0 +1,72 @@
+@startuml
+title Arquitetura MVC
+
+package "Apresentação (View)" {
+  [HTML] 
+  [JavaScript]
+}
+
+package "Controlador (Controller)" {
+  [UserController]
+  [LoginController]
+  [RifaController]
+  [BilheteController]
+  [LivroController]
+  [EmprestimoController]
+  [DoacaoController]
+  [ExemplarController]
+}
+
+package "Serviço (Service)" {
+  [UserService]
+    [LoginService]
+    [RifaService]
+    [BilheteService]
+    [LivroService]
+    [EmprestimoService]
+    [DoacaoService]
+    [ExemplarService]
+}
+
+package "Repositório (Repository)" {
+  [UserRepository]
+    [RifaRepository]
+    [BilheteRepository]
+    [LivroRepository]
+    [EmprestimoRepository]
+    [DoacaoRepository]
+    [ExemplarRepository]
+}
+
+package "Banco de Dados" {
+  [PostgreSQL]
+}
+
+[HTML] --> [UserController]
+[JavaScript] --> [UserController]
+[UserController] --> [UserService]
+[UserService] --> [UserRepository]
+[UserRepository] --> [PostgreSQL]
+[RifaController] --> [RifaService]
+[RifaService] --> [RifaRepository]
+[RifaRepository] --> [PostgreSQL]
+[BilheteController] --> [BilheteService]
+[BilheteService] --> [BilheteRepository]
+[BilheteRepository] --> [PostgreSQL]
+[LivroController] --> [LivroService]
+[LivroService] --> [LivroRepository]
+[LivroRepository] --> [PostgreSQL]
+[EmprestimoController] --> [EmprestimoService]
+[EmprestimoService] --> [EmprestimoRepository]
+[EmprestimoRepository] --> [PostgreSQL]
+[DoacaoController] --> [DoacaoService]
+[DoacaoService] --> [DoacaoRepository]
+[DoacaoRepository] --> [PostgreSQL]
+[LoginController] --> [LoginService]
+[LoginService] --> [UserRepository]
+[ExemplarController] --> [ExemplarService]
+[ExemplarService] --> [ExemplarRepository]
+[ExemplarRepository] --> [PostgreSQL]
+
+
+@enduml

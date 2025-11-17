@@ -1,0 +1,15 @@
+@startuml
+left to right direction
+rectangle Biblioteca {
+    (Gerenciar livros)
+    (Gerenciar empréstimos)
+    (Histórico de movimentação)
+    (Gerenciar leitores)
+    (Gerenciar exemplares)
+}
+:Bibliotecária: --> (Gerenciar livros)
+:Bibliotecária: --> (Gerenciar empréstimos)
+:Bibliotecária: --> (Histórico de movimentação)
+:Bibliotecária: --> (Gerenciar leitores)
+:Bibliotecária: --> (Gerenciar exemplares)
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+actor Bibliotecária
+boundary EmprestimoController
+Bibliotecária -> EmprestimoController: Solicitar renovação de empréstimo
+activate EmprestimoController
+control EmprestimoService
+EmprestimoController -> EmprestimoService: Verificar elegibilidade para renovação
+activate EmprestimoService
+entity Emprestimo 
+EmprestimoService -> Emprestimo: Consultar status do empréstimo
+activate Emprestimo
+database BibliotecaDB
+Emprestimo -> BibliotecaDB: SELECT * FROM emprestimos WHERE id = ?
+activate BibliotecaDB
+BibliotecaDB --> Emprestimo: Retorna dados do empréstimo
+deactivate BibliotecaDB
+Emprestimo --> EmprestimoService: Retorna status do empréstimo
+deactivate Emprestimo
+EmprestimoService -> Emprestimo: Atualizar data de devolução
+Emprestimo --> EmprestimoService: Retorna empréstimo atualizado
+deactivate EmprestimoService
+EmprestimoService --> EmprestimoController: Retorna empréstimo renovado
+deactivate EmprestimoController
+EmprestimoController --> Bibliotecária: Retorna confirmação de renovação com status OK
+deactivate Bibliotecária
+@enduml

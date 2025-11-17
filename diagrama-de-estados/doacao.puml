@@ -1,0 +1,11 @@
+@startuml 
+    State "Doação Iniciada" as DoacaoIniciada {
+    }
+    State "Doação Processada" as DoacaoProcessada {
+    }
+    State "Doação Concluída" as DoacaoConcluida {
+    }
+    [*] --> DoacaoIniciada
+    DoacaoIniciada --> DoacaoProcessada : Processar doação
+    DoacaoProcessada --> DoacaoConcluida : Confirmar doação
+@enduml 

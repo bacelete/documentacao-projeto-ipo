@@ -1,0 +1,15 @@
+@startuml
+left to right direction
+rectangle Sistema {
+    (Gerenciar usuários)
+    (Gerenciar doações)
+    (Gerenciar rifas)
+    (Gerar relatórios)
+    (Gerenciar doadores)
+}
+:Administrador: --> (Gerenciar usuários)
+:Administrador: --> (Gerenciar doações)
+:Administrador: --> (Gerenciar rifas)
+:Administrador: --> (Gerar relatórios)
+:Administrador: --> (Gerenciar doadores)
+@enduml
