@@ -2,117 +2,93 @@
 left to right direction
 title Diagrama de Caso de Uso Geral - Instituto Padre Olavo
 
-' --- Definição dos Atores baseada no Modelo de Dados (dados.puml) ---
-
+' --- Atores do Sistema ---
 actor "Usuário (Genérico)" as User
-actor "Visitante" as Visitante
-
-' Atores Administrativos
 actor "Administrador Geral" as Admin
 actor "Administrador da Biblioteca\n(Bibliotecária)" as BibliotecaAdmin
 actor "Administrador de Rifas" as RifaAdmin
-
-' Atores de Negócio (Usuários Finais)
-actor "Leitor da Biblioteca" as BibliotecaLeitor
 actor "Comprador de Rifa" as RifaComprador
-actor "Doador" as Doador
+actor "Visitante" as Visitante
 
-' Sistema Externo identificado nos componentes
+' --- Atores Externos (Sistemas) ---
 actor "API de Pagamento" as PagamentoAPI
 
-' --- Herança de Atores ---
-' Admins são tipos de usuários logáveis com permissões
+' --- Heranças ---
 User <|-- Admin
 User <|-- BibliotecaAdmin
 User <|-- RifaAdmin
-
-' Usuários de negócio também são usuários do sistema
-User <|-- BibliotecaLeitor
 User <|-- RifaComprador
-User <|-- Doador
 
-' Visitante pode se tornar um Usuário
+' Visitante pode se cadastrar para virar um Comprador/Usuário
 Visitante <.. User : Cadastrar-se
 
 package "Sistema Instituto Padre Olavo" {
 
-    ' --- Módulo Administração Geral (Baseado em uc3.puml) ---
+    ' --- Módulo Administração Geral ---
     package "Módulo Administrativo" {
         usecase "Gerenciar Usuários" as UC_GerenciarUsers
         usecase "Gerar Relatórios Gerais" as UC_Relatorios
+        
+        ' Admin cadastra e gerencia doadores e doações
         usecase "Gerenciar Doadores" as UC_GerenciarDoadores
+        usecase "Gerenciar Doações\n(Inclui Cadastrar Doação)" as UC_GerenciarDoacoes
     }
 
-    ' --- Módulo Biblioteca (Baseado em uc1.puml e dados.puml) ---
+    ' --- Módulo Biblioteca ---
     package "Módulo Biblioteca" {
-        ' Casos de uso da Bibliotecária
+        ' Bibliotecária gerencia tudo, o leitor não interage diretamente
         usecase "Gerenciar Livros" as UC_GerenciarLivros
-        usecase "Gerenciar Empréstimos" as UC_GerenciarEmprestimos
+        usecase "Gerenciar Empréstimos\n(Realizar/Devolver/Renovar)" as UC_GerenciarEmprestimos
         usecase "Gerenciar Exemplares" as UC_GerenciarExemplares
-        usecase "Gerenciar Leitores" as UC_GerenciarLeitores
+        usecase "Gerenciar Leitores\n(Cadastrar Leitor)" as UC_GerenciarLeitores
         usecase "Visualizar Histórico de Movimentação" as UC_HistoricoMov
         
-        ' Casos de uso do Leitor (Inferidos do modelo de domínio)
+        ' Consulta pública (opcional para visitantes)
         usecase "Consultar Acervo" as UC_ConsultarAcervo
-        usecase "Visualizar Meus Empréstimos" as UC_MeusEmprestimos
     }
 
-    ' --- Módulo Rifas (Baseado em uc2.puml e dados.puml) ---
+    ' --- Módulo Rifas ---
     package "Módulo Rifas" {
-        ' Gestão
+        ' Admin de Rifas
         usecase "Gerenciar Rifas" as UC_GerenciarRifas
         usecase "Realizar Sorteio" as UC_SortearRifa
         
-        ' Compra
+        ' Comprador (Usuário final ativo)
         usecase "Buscar Ingressos Disponíveis" as UC_BuscarIngressos
         usecase "Selecionar Ingressos" as UC_SelecionarIngressos
         usecase "Realizar Pagamento" as UC_PagarRifa
     }
-
-    ' --- Módulo Doações (Baseado em uc3.puml e dados.puml) ---
-    package "Módulo Doações" {
-        usecase "Gerenciar Doações" as UC_GerenciarDoacoes
-        usecase "Realizar Doação" as UC_FazerDoacao
-        usecase "Visualizar Histórico de Doações" as UC_HistoricoDoacoes
-    }
 }
 
-' --- Relacionamentos Atores x Casos de Uso ---
+' --- Relacionamentos ---
 
 ' Visitante
 Visitante --> UC_ConsultarAcervo
 Visitante --> UC_BuscarIngressos
 
-' Administrador Geral (uc3)
+' Administrador Geral
 Admin --> UC_GerenciarUsers
 Admin --> UC_Relatorios
-Admin --> UC_GerenciarDoacoes
+Admin --> UC_GerenciarDoacoes : <<Cadastra/Gerencia>>
 Admin --> UC_GerenciarDoadores
 Admin --> UC_GerenciarRifas
 
-' Biblioteca Admin (Bibliotecária - uc1)
+' Bibliotecária
 BibliotecaAdmin --> UC_GerenciarLivros
-BibliotecaAdmin --> UC_GerenciarEmprestimos
+BibliotecaAdmin --> UC_GerenciarEmprestimos : <<Registra para o Leitor>>
 BibliotecaAdmin --> UC_GerenciarExemplares
-BibliotecaAdmin --> UC_GerenciarLeitores
+BibliotecaAdmin --> UC_GerenciarLeitores : <<Cadastra>>
 BibliotecaAdmin --> UC_HistoricoMov
+BibliotecaAdmin --> UC_ConsultarAcervo
 
-' Biblioteca Leitor
-BibliotecaLeitor --> UC_ConsultarAcervo
-BibliotecaLeitor --> UC_MeusEmprestimos
-
-' Rifa Admin (Especialização para gestão de rifas)
+' Administrador de Rifas
 RifaAdmin --> UC_GerenciarRifas
 RifaAdmin --> UC_SortearRifa
 
-' Rifa Comprador (uc2)
+' Comprador de Rifa
 RifaComprador --> UC_BuscarIngressos
 RifaComprador --> UC_SelecionarIngressos
 RifaComprador --> UC_PagarRifa
-
-' Doador
-Doador --> UC_FazerDoacao
-Doador --> UC_HistoricoDoacoes
 
 ' Integrações
 UC_PagarRifa ..> PagamentoAPI : <<include>>
