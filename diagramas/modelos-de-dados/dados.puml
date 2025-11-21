@@ -1,13 +1,69 @@
 @startuml
 title Modelo de Dados do Sistema
 
-' Entidade User inferida de chaves estrangeiras (userId, leitorId) e arquitetura
-entity User {
-  +id: Long
-  ' ... outros campos (ex: nome, email)
+package "shared" {
+    entity User {
+        +id: Long
+        -nome: String
+        -email: String
+        -user_type: String
+        -foto_de_perfil: String
+    }
+    entity BibliotecaAdmin {
+        +id: Long
+        -userId: Long
+        -cpf: String
+    }
+    entity Admin {
+        +id: Long
+        -userId: Long
+        -cpf: String
+    }
+    entity LoggableUser {
+        -senha: String
+    }
+    entity Doador {
+        +id: Long
+        -userId: Long
+        -telefone: String
+        -endereco: String
+    }
+    entity RifaComprador {
+        +id: Long
+        -userId: Long
+        -cep: String
+        -complemento: String
+        -permiteEnviarPropagandas: Boolean
+    }
+    entity RifaAdmin {
+        +id: Long
+        -userId: Long
+        -cpf: String
+    }
+    entity DoadorJuridico {
+        +id: Long
+        -doadorId: Long
+        -cnpj: String
+        -razaoSocial: String
+    }
+    
+    entity DoadorPessoaFisica {
+        +id: Long
+        -doadorId: Long
+        -cpf: String
+        -cep: String
+    }
+    entity BibliotecaLeitor {
+        +id: Long
+        -userId: Long
+        -matricula: String
+        -dataDeNascimento: LocalDate
+        -complemento: String
+        -endereco: String
+    }
 }
 
-package "Rifa" {
+package "rifa" {
     entity Rifa {
         +id: Long
         -titulo: String
@@ -90,12 +146,22 @@ package "Biblioteca" {
 }
 
 ' --- Relacionamentos ---
-Rifa "1" -- "0..*" Bilhete : contém
+Rifa "1" -- "0..*" Bilhete : possui
 User "1" -- "0..*" Bilhete : compra
 User "1" -- "0..*" Doacao : registra
 User "1" -- "0..*" Emprestimo : (Leitor) realiza
 Livro "1" -- "1..*" Exemplar : possui
 Exemplar "1" -- "0..*" Emprestimo : é emprestado
 Exemplar "1" -- "0..*" ExemplarHistory : tem histórico
+User "1" -- "0..1" Doador : é
+LoggableUser <|-- BibliotecaAdmin
+LoggableUser <|-- Admin
+LoggableUser <|-- RifaAdmin
+Doador <|-- DoadorJuridico
+Doador <|-- DoadorPessoaFisica
+User <|-- LoggableUser
+User "1" -- "0..1" RifaComprador : é
+User "1" -- "0..1" BibliotecaLeitor : é
+
 
 @enduml
