@@ -3,24 +3,13 @@ left to right direction
 title Diagrama de Caso de Uso Geral - Instituto Padre Olavo
 
 ' --- Atores do Sistema ---
-actor "Usuário (Genérico)" as User
 actor "Administrador Geral" as Admin
 actor "Administrador da Biblioteca\n(Bibliotecária)" as BibliotecaAdmin
 actor "Administrador de Rifas" as RifaAdmin
 actor "Comprador de Rifa" as RifaComprador
-actor "Visitante" as Visitante
 
 ' --- Atores Externos (Sistemas) ---
 actor "API de Pagamento" as PagamentoAPI
-
-' --- Heranças ---
-User <|-- Admin
-User <|-- BibliotecaAdmin
-User <|-- RifaAdmin
-User <|-- RifaComprador
-
-' Visitante pode se cadastrar para virar um Comprador/Usuário
-Visitante <.. User : Cadastrar-se
 
 package "Sistema Instituto Padre Olavo" {
 
@@ -36,14 +25,12 @@ package "Sistema Instituto Padre Olavo" {
 
     ' --- Módulo Biblioteca ---
     package "Módulo Biblioteca" {
-        ' Bibliotecária gerencia tudo, o leitor não interage diretamente
+        ' Bibliotecária gerencia todo o fluxo
         usecase "Gerenciar Livros" as UC_GerenciarLivros
         usecase "Gerenciar Empréstimos\n(Realizar/Devolver/Renovar)" as UC_GerenciarEmprestimos
         usecase "Gerenciar Exemplares" as UC_GerenciarExemplares
         usecase "Gerenciar Leitores\n(Cadastrar Leitor)" as UC_GerenciarLeitores
         usecase "Visualizar Histórico de Movimentação" as UC_HistoricoMov
-        
-        ' Consulta pública (opcional para visitantes)
         usecase "Consultar Acervo" as UC_ConsultarAcervo
     }
 
@@ -61,10 +48,6 @@ package "Sistema Instituto Padre Olavo" {
 }
 
 ' --- Relacionamentos ---
-
-' Visitante
-Visitante --> UC_ConsultarAcervo
-Visitante --> UC_BuscarIngressos
 
 ' Administrador Geral
 Admin --> UC_GerenciarUsers
