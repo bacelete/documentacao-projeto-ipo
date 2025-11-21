@@ -70,9 +70,18 @@ package "rifa" {
         -descricao: String
         -dataSorteio: Date
         -qtdBilhetesTotal: Long
-        -qtdBilhetesVendidos: Long
+        -qtdBilhetesDisponiveis: Long
         -totalValorArrecadado: BigDecimal
         -statusRifa: String
+        -corInicioFundo: String
+        -corMeioFundo: String
+        -corFimFundo: String
+        -fotos: String 
+    }
+    entity RifaFoto {
+        +id: Long
+        -url: String
+        -rifaId: Long
     }
 
     entity Bilhete {
@@ -96,14 +105,39 @@ package "Doação" {
         ' --- Chave Estrangeira ---
         -userId: Long
     }
+    entity DoacaoFoto {
+        +id: Long
+        -url: String
+        -doacaoId: Long
+    }
+    entity DoacaoItem {
+        +id: Long
+        -statusItem: String
+        -doacaoId: Long
+    }
+    entity DoacaoValor {
+        +id: Long
+        -metodoPagamento: String
+        -doacaoId: Long
+    }
+    entity DoacaoEvento {
+        +id: Long
+        -numeroDePessoas: Integer
+        -doacaoId: Long
+    }   
 }
 
 package "Biblioteca" {
+    entity PalavraChave {
+        +id: Long
+        -palavra-chave: String
+    }
     entity Livro {
         +id: Long
         -titulo: String
         -subtitulo: String
         -resumo: String
+        -paginas: Integer
         -classificacao: String
         -autorPrincipal: String
         -autorSecundario: String
@@ -115,33 +149,43 @@ package "Biblioteca" {
         -edicao: String
         -ano: String
         -anoPublicacao: Date
+        -palavraChaveId: Long
     }
 
     entity Exemplar {
         +id: Long
-        -codigoExemplar: String
+        -codigo: String
+        -numeroExemplar: String
+        -numeroDePatrimonio: String
+        -volume: Integer
         -statusExemplar: String
+        -estadoDeConservacao: String
+        -dataDeRegistro: Date
         ' --- Chave Estrangeira ---
         -livroId: Long
     }
-
     entity Emprestimo {
         +id: Long
-        -dataEmprestimo: Date
+        -data: Instant
         -prazoDeDevolucao: LocalDate
         -statusEmprestimo: String
         ' --- Chaves Estrangeiras ---
-        -leitorId: Long ' (Refere-se a User)
+        -leitorId: Long
         -exemplarId: Long
     }
-
     entity ExemplarHistory {
         +id: Long
-        -dataAlteracao: Date
         -createdAt: Instant
-        -descricaoAlteracao: String
-        ' --- Chave Estrangeira ---
+        -observacao: String
         -exemplarId: Long
+        -action: String
+    }
+    entity EmprestimoHistory {
+        +id: Long
+        -createdAt: Instant
+        -observacao: String
+        -emprestimoId: Long
+        -action: String
     }
 }
 
@@ -162,6 +206,14 @@ Doador <|-- DoadorPessoaFisica
 User <|-- LoggableUser
 User "1" -- "0..1" RifaComprador : é
 User "1" -- "0..1" BibliotecaLeitor : é
-
+Exemplar "1" -- "0..*" EmprestimoHistory : tem histórico
+ExemplarHistory o-- Exemplar : referência
+EmprestimoHistory o-- Emprestimo : referência
+PalavraChave "0..*" -- "0..*" Livro : associa
+RifaFoto "0..*" -- "1" Rifa : pertence
+DoacaoFoto "0..*" -- "1" Doacao : pertence
+Doacao <|-- DoacaoItem
+Doacao <|-- DoacaoValor
+Doacao <|-- DoacaoEvento
 
 @enduml
